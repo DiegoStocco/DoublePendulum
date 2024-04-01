@@ -6,6 +6,8 @@ LIB_DIRECTORY = ./JAGE
 LIB_INCLUDE = ./JAGE/include
 LIB_FILE = ./JAGE/jage.a
 
+HEADER_DIR = ./headers
+
 #CC specifies which compiler we're using
 CC = clang++
 LINKER = clang++
@@ -26,7 +28,7 @@ $(RESULT) : $(LIB_FILE) $(OBJS)
 	$(LINKER) $(OBJS) $(LIB_FILE) $(LINKER_FLAGS) -o $(RESULT)
 
 %.o: %.cpp
-	$(CC) $(addprefix -I, $(LIB_INCLUDE)) $(COMPILER_FLAGS) -c -o $@ $<
+	$(CC) $(addprefix -I, $(LIB_INCLUDE)) $(addprefix -I, $(HEADER_DIR)) $(COMPILER_FLAGS) -c -o $@ $<
 
 $(LIB_FILE):
 	make -C $(LIB_DIRECTORY)
