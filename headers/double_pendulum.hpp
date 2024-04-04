@@ -12,9 +12,9 @@ class DoublePendulum {
     glm::vec2 getAngles() const;
 
   private:
+    glm::vec2 masses;
+    glm::vec2 lengths;
     glm::vec2 angles;
     glm::vec2 ang_velocities;
-    glm::vec2 lengths;
-    glm::vec2 masses;
 
 };
