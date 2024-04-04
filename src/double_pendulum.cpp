@@ -25,7 +25,19 @@ Arguments:
 */
 
 DoublePendulum::DoublePendulum(glm::vec2 masses, glm::vec2 lengths, glm::vec2 start_angles, glm::vec2 start_velocities)
-                 : masses(masses), lengths(lengths), angles(start_angles), ang_velocities(start_velocities) {};
+                 : masses(masses), lengths(lengths), angles(start_angles), ang_velocities(start_velocities)
+{
+
+  // vb = new JAGE::VertexBuffer()
+  
+};
+
+DoublePendulum::~DoublePendulum() {
+  // delete vb;
+  // delete va;
+  // delete ib;
+  // delete fill_color;
+}
 
 /*
 Description:
@@ -56,6 +68,10 @@ void DoublePendulum::update(double deltaTime) {
 
   ang_velocities[1] += deltaTime * (a*cp - ap*c)/(a*bp - ap*b);
   angles[1] += deltaTime * ang_velocities[1];
+}
+
+void DoublePendulum::render(JAGE::Window* window) {
+
 }
 
 /*
