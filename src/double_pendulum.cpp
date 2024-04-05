@@ -1,6 +1,8 @@
 #include "double_pendulum.hpp"
 #include "constants.hpp"
-#include <cmath>
+#include "index_buffer.h"
+#include "shader.h"
+#include "renderer.h"
 
 using Constants::g;
 
@@ -27,16 +29,38 @@ Arguments:
 DoublePendulum::DoublePendulum(glm::vec2 masses, glm::vec2 lengths, glm::vec2 start_angles, glm::vec2 start_velocities)
                  : masses(masses), lengths(lengths), angles(start_angles), ang_velocities(start_velocities)
 {
+  float positions_and_colors[] = {
+  //x,   y,   z,   r,   g,   b
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  };
 
-  // vb = new JAGE::VertexBuffer()
+  vb = new JAGE::VertexBuffer(positions_and_colors, sizeof(positions_and_colors));
+
+  JAGE::VertexBufferLayout layout;
+  layout.Push<float>(3);
+  layout.Push<float>(3);
+
+  va = new JAGE::VertexArray();
+  va->AddBuffer(*vb, layout);
   
+  unsigned int indicies[] = {
+    0, 0, 0,
+    0, 0, 0,
+  };
+
+  ib = new JAGE::IndexBuffer(indicies, sizeof(indicies));
+
+  colored_trigs = new JAGE::Shader({{"shaders/apply_matrix.vert", GL_VERTEX_SHADER}, {"shaders/colored_trigs.frag", GL_FRAGMENT_SHADER}});
 };
 
 DoublePendulum::~DoublePendulum() {
-  // delete vb;
-  // delete va;
-  // delete ib;
-  // delete fill_color;
+  delete vb;
+  delete va;
+  delete ib;
+  delete colored_trigs;
 }
 
 /*
@@ -71,7 +95,14 @@ void DoublePendulum::update(double deltaTime) {
 }
 
 void DoublePendulum::render(JAGE::Window* window) {
-
+  JAGE::Renderer renderer;
+  window->Bind();
+  renderer.Clear();
+  for(int i : {0, 1}) {
+    colored_trigs->SetUniformMatrix4("MPV", model_matrices + i);
+    renderer.Draw(*va, *ib, *colored_trigs);
+  }
+  glfwSwapBuffers(window->getWindow());
 }
 
 /*

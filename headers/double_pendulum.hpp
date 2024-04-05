@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/ext/matrix_float4x4.hpp>
 #include <glm/vec2.hpp>
 
 #include <vertex_buffer.h>
@@ -28,6 +29,8 @@ class DoublePendulum {
     JAGE::VertexBuffer* vb;
     JAGE::VertexArray* va;
     JAGE::IndexBuffer* ib;
-    JAGE::Shader* fill_color;
+    JAGE::Shader* colored_trigs;
+
+    glm::mat4 model_matrices[2];
 
 };

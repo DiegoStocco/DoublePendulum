@@ -50,8 +50,8 @@ int main(int argc, char* argv[]) {
     // Update pendulum's position and velocity
     pendulum.update(deltaTime);
 
-    // TODO: render the pendulum, for now you can have the angles printed on stdout
-    std::cout << pendulum.getAngles().x << " " << pendulum.getAngles().y << std::endl;
+    // Render the pendulum
+    pendulum.render(window);
     
     oldtime = time;
     time = glfwGetTime();
