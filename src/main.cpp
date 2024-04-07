@@ -1,5 +1,6 @@
 #include "double_pendulum.hpp"
 #include <glm/ext/vector_float2.hpp>
+#include <glm/trigonometric.hpp>
 #include <iostream>
 #include <window.h>
 #include <errors.h>
@@ -36,8 +37,8 @@ int main(int argc, char* argv[]) {
   JAGE::Window* window = init();
 
   glm::vec2 masses({1.0, 1.0});
-  glm::vec2 lengths({1.0, 1.0});
-  glm::vec2 angles({1.5, 1.5});
+  glm::vec2 lengths({2.2, 2.0});
+  glm::vec2 angles({glm::radians(90.0), glm::radians(180.0)});
   glm::vec2 angular_velocity({0, 0});
   DoublePendulum pendulum(masses, lengths, angles, angular_velocity);
 
