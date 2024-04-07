@@ -14,7 +14,7 @@ JAGE::Window* init()
 
   JAGE::enable_glfw_errors();
 
-  JAGE::Window *window = new JAGE::Window("Field", 900, 700);
+  JAGE::Window *window = new JAGE::Window("Double Pendulum", 900, 700);
   window->Bind();
 
   glEnable(GL_DEPTH_TEST);
