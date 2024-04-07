@@ -3,6 +3,7 @@
 #include "index_buffer.h"
 #include "shader.h"
 #include "renderer.h"
+#include "glm/ext/matrix_transform.hpp"
 
 using Constants::g;
 
@@ -30,11 +31,11 @@ DoublePendulum::DoublePendulum(glm::vec2 masses, glm::vec2 lengths, glm::vec2 st
                  : masses(masses), lengths(lengths), angles(start_angles), ang_velocities(start_velocities)
 {
   float positions_and_colors[] = {
-  //x,   y,   z,   r,   g,   b
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  //x,     y,   z,   r,   g,   b
+    -0.3,  0.5, 0.0, 0.2, 0.1, 0.8,
+     0.3,  0.5, 0.0, 0.2, 0.1, 0.8,
+     0.3, -0.5, 0.0, 0.2, 0.1, 0.8,
+    -0.3, -0.5, 0.0, 0.2, 0.1, 0.8,
   };
 
   vb = new JAGE::VertexBuffer(positions_and_colors, sizeof(positions_and_colors));
@@ -47,8 +48,8 @@ DoublePendulum::DoublePendulum(glm::vec2 masses, glm::vec2 lengths, glm::vec2 st
   va->AddBuffer(*vb, layout);
   
   unsigned int indicies[] = {
-    0, 0, 0,
-    0, 0, 0,
+    0, 1, 2,
+    2, 3, 0,
   };
 
   ib = new JAGE::IndexBuffer(indicies, sizeof(indicies));
@@ -95,6 +96,8 @@ void DoublePendulum::update(double deltaTime) {
 }
 
 void DoublePendulum::render(JAGE::Window* window) {
+  UpdateMatrices();
+
   JAGE::Renderer renderer;
   window->Bind();
   renderer.Clear();
@@ -133,4 +136,30 @@ Return value:
 */
 glm::vec2 DoublePendulum::getAngles() const {
   return angles;
+}
+
+void DoublePendulum::UpdateMatrices() {
+  // This value should be somewhere else
+  float scale_coeff = 0.2f;
+
+  // Update matrix 1
+  {
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_coeff, lengths[0]*scale_coeff, 1.0f));
+    glm::mat4 move_top_to_origin = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -scale_coeff * lengths[0]/2.0, 0.0f));
+    glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), angles[0], glm::vec3(0,0,1));
+
+    model_matrices[0] = rotate * move_top_to_origin * scale;
+  }
+
+  // Update matrix 2
+  {
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_coeff, lengths[1]*scale_coeff, 1.0f));
+    glm::mat4 move_top_to_origin = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -scale_coeff * lengths[1]/2.0, 0.0f));
+    glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), angles[1], glm::vec3(0,0,1));
+
+    glm::vec3 pendulum1_end = model_matrices[0] * glm::vec4(0, -0.5, 0, 1);
+    glm::mat4 move_top_to_pendulm1 = glm::translate(glm::mat4(1.0f), pendulum1_end);
+
+    model_matrices[1] = move_top_to_pendulm1 * rotate * move_top_to_origin * scale;
+  }
 }

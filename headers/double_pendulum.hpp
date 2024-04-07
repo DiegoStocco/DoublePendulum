@@ -21,6 +21,9 @@ class DoublePendulum {
     glm::vec2 getAngles() const;
 
   private:
+    void UpdateMatrices();
+
+  private:
     glm::vec2 masses;
     glm::vec2 lengths;
     glm::vec2 angles;
