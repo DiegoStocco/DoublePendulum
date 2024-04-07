@@ -90,9 +90,11 @@ void DoublePendulum::update(double deltaTime) {
 
   ang_velocities[0] += deltaTime * (bp*c - b*cp)/(a*bp - ap*b);
   angles[0] += deltaTime * ang_velocities[0];
+  angles[0] = std::fmod(angles[0], glm::radians(360.0));
 
   ang_velocities[1] += deltaTime * (a*cp - ap*c)/(a*bp - ap*b);
   angles[1] += deltaTime * ang_velocities[1];
+  angles[1] = std::fmod(angles[1], glm::radians(360.0));
 }
 
 void DoublePendulum::render(JAGE::Window* window) {
