@@ -102,12 +102,10 @@ void DoublePendulum::render(JAGE::Window* window) {
 
   JAGE::Renderer renderer;
   window->Bind();
-  renderer.Clear();
   for(int i : {0, 1}) {
     colored_trigs->SetUniformMatrix4("MPV", model_matrices + i);
     renderer.Draw(*va, *ib, *colored_trigs);
   }
-  glfwSwapBuffers(window->getWindow());
 }
 
 /*
