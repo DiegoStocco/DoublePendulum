@@ -1,4 +1,4 @@
-## Double pendulum simulation (WIP)
+## Double pendulum simulation
 This project should do a simulation of a double pendulum,
 the math is handled by the DoublePendulum class, and the
 graphics will be implemented with the brilliant JAGE library.
