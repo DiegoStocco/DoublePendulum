@@ -7,7 +7,7 @@ graphics is implemented with the brilliant JAGE library.
 - GLFW
 - GLEW
 - GLM
-- clang
+- g++
 
 ### How to build (Linux and maybe macOS):
 Clone the repository:

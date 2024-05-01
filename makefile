@@ -9,8 +9,8 @@ LIB_FILE = ./JAGE/jage.a
 HEADER_DIR = ./headers
 
 #CC specifies which compiler we're using
-CC = clang++
-LINKER = clang++
+CC = g++
+LINKER = g++
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -O2 -g -Wall
